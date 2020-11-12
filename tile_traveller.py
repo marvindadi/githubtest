@@ -4,6 +4,7 @@ BORDERS =  {(0, 0): [(0, 1)], (0, 1): [(0, 0), (0, 2)], (0, 2): [(0, 1)],
             (2, 0): [], (2, 1): [(1, 1)], (2, 2): []}
 
 DIRECTIONS = {"N": "(N)orth", "E": "(E)ast", "S":"(S)outh", "W":"(W)est"}
+COIN_POS = [(1, 0), (1, 1), (2, 1), (1, 2)]
 
 def intitialize_board():
     board = []
@@ -53,12 +54,17 @@ def get_direction(current_pos, valid_moves):
     print(".")
 
     valid = False
+    counter = 0
     while valid == False:
         choice = input("Direction: ").upper()
         if choice in valid_moves:
-            return choice
+            valid = True
         else:
             print("Not a valid direction!")
+        counter += 1
+    
+
+    return choice, counter-1
 
 def make_move(board, move, current_pos):
     pos_line = current_pos[0]
@@ -80,15 +86,29 @@ def make_move(board, move, current_pos):
 
     return board, new_pos
 
+def pull_lever():
+    pull_lever = input("Pull lever (y/n): ")
+    if pull_lever.lower() == 'y':
+        return True
+    else:
+        return False
+
 # Main
 def main():
+    stop_coins = 0
     board, current_pos = intitialize_board()
+    total_coins = 0
     while current_pos != (0, 2):
         valid_moves = get_valid_moves(current_pos)
-        move = get_direction(current_pos, valid_moves)
+        move, stop_coins_int = get_direction(current_pos, valid_moves)
+        stop_coins += stop_coins_int
         board, current_pos = make_move(board, move, current_pos)
+        if current_pos in COIN_POS and stop_coins == 0:
+            coin_bool = pull_lever()
+            if coin_bool == True:
+                total_coins += 1
         if current_pos == (0, 2):
-            print("Victory!")
+            print("Victory! Total coins: {}".format(total_coins))
 
 
 main()
