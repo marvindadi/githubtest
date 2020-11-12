@@ -93,8 +93,8 @@ def pull_lever():
     else:
         return False
 
-# Main
-def main():
+
+def play():
     stop_coins = 0
     board, current_pos = intitialize_board()
     total_coins = 0
@@ -110,5 +110,13 @@ def main():
         if current_pos == (0, 2):
             print("Victory! Total coins: {}".format(total_coins))
 
+# Main
+def main():
+    keep_going = True
+    while keep_going == True:
+        play()
+        play_again = input("Do you want to play again (Y/N)").upper()
+        if play_again != 'Y':
+            keep_going = False
 
 main()
