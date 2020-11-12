@@ -133,7 +133,6 @@ def main():
         game_moves, game_coins = play()
         total_move_list.append(game_moves)
         total_coin_list.append(game_coins)
-        print(game_coins, game_moves)
         play_again = input("Do you want to play again (Y/N)").upper()
         if play_again != 'Y':
             keep_going = False

@@ -110,13 +110,46 @@ def play():
         if current_pos == (0, 2):
             print("Victory! Total coins: {}".format(total_coins))
 
+def play():
+    stop_coins = 0
+    board, current_pos = intitialize_board()
+    total_coins = 0
+    move_counter = 0
+    while current_pos != (0, 2):
+        valid_moves = get_valid_moves(current_pos)
+        move, stop_coins_int = get_direction(current_pos, valid_moves)
+        stop_coins += stop_coins_int
+        board, current_pos = make_move(board, move, current_pos)
+        if current_pos in COIN_POS and stop_coins == 0:
+            coin_bool = pull_lever()
+            if coin_bool == True:
+                total_coins += 1
+        if current_pos == (0, 2):
+            print("Victory! Total coins: {}".format(total_coins))
+        move_counter += 1
+    return move_counter, total_coins
+
 # Main
 def main():
     keep_going = True
+    total_move_list = []
+    total_coin_list = []
     while keep_going == True:
-        play()
+        game_moves, game_coins = play()
+        total_move_list.append(game_moves)
+        total_coin_list.append(game_coins)
         play_again = input("Do you want to play again (Y/N)").upper()
         if play_again != 'Y':
             keep_going = False
+            for i in range(len(total_move_list)):
+                print("\nGame {}: ".format(i+1))
+                print("\ttotal moves: {}".format(total_move_list[i]))
+                print("\ttotal coins: {}".format(total_coin_list[i]))
+
+            move_average = sum(total_move_list) / len(total_move_list)
+            coin_average = sum(total_coin_list) / len(total_coin_list)
+            print("\n\nAverage moves: {}".format(round(move_average, 2)))
+            print("Average coins: {}".format(round(coin_average, 2)))
+
 
 main()
