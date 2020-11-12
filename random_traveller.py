@@ -43,7 +43,7 @@ def get_valid_moves(current_pos):
         move = (pos_line, pos_col + 1)
         if move not in BORDERS[current_pos]:
             valid_move_list.append("E")
-
+ 
     return valid_move_list
 
 def get_direction(current_pos, valid_moves):
